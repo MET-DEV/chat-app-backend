@@ -1,6 +1,8 @@
 const httpStatus = require("http-status")
 const {hashPassword}=require("../scripts/utils/security/helper")
-const {insert}=require("../services/Users")
+const {insert,list}=require("../services/UserService")
+
+
 const create=(req,res)=>{
     req.body.password=hashPassword(req.body.password)
     insert(req.body).then(response=>{
@@ -8,7 +10,17 @@ const create=(req,res)=>{
     }).catch(e=>res.status(httpStatus.INTERNAL_SERVER_ERROR).send(e))
 }
 
+const index=(req,res)=>{
+    list().then(response=>{
+        res.status(httpStatus.OK).send(response)
+    }).catch(e=>res.status(httpStatus.INTERNAL_SERVER_ERROR).send(e))
+}
+
+
+
 module.exports={
     create,
+    index,
+    
 
 }
